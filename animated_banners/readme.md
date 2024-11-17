@@ -1,0 +1,1 @@
+banners in .gif type
