@@ -9,12 +9,13 @@ fi
 # Шаг 1: Обновление и установка зависимостей
 echo "Обновление системы и установка зависимостей..."
 apt update -y
-apt install -y software-properties-common wget git python3.8 python3.8-distutils
+apt install -y software-properties-common wget git
 
 # Шаг 2: Добавление репозитория deadsnakes и установка Python 3.8
 echo "Добавление репозитория и установка Python 3.8..."
 add-apt-repository ppa:deadsnakes/ppa -y
 apt update -y
+apt install -y python3.8 python3.8-distutils python3.8-venv
 
 # Шаг 3: Установка pip и виртуального окружения
 echo "Установка pip и виртуального окружения..."
