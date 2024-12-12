@@ -17,7 +17,7 @@ add-apt-repository ppa:deadsnakes/ppa -y
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
 apt update -y
-apt install -y python3.8 python3.8-distutils python3.8-venv install docker-ce
+apt install -y python3.8 python3.8-distutils python3.8-venv docker-ce
 
 # Шаг 3: Установка pip и виртуального окружения
 echo "Установка pip и виртуального окружения..."
