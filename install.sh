@@ -9,13 +9,15 @@ fi
 # Шаг 1: Обновление и установка зависимостей
 echo "Обновление системы и установка зависимостей..."
 apt update -y
-apt install -y software-properties-common wget git
+apt install -y software-properties-common wget git apt-transport-https ca-certificates curl
 
-# Шаг 2: Добавление репозитория deadsnakes и установка Python 3.8
-echo "Добавление репозитория и установка Python 3.8..."
+# Шаг 2: Добавление репозитория и установка Python 3.8 и docker
+echo "Добавление репозитория и установка Python 3.8 и docker..."
 add-apt-repository ppa:deadsnakes/ppa -y
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
 apt update -y
-apt install -y python3.8 python3.8-distutils python3.8-venv
+apt install -y python3.8 python3.8-distutils python3.8-venv install docker-ce
 
 # Шаг 3: Установка pip и виртуального окружения
 echo "Установка pip и виртуального окружения..."
@@ -34,11 +36,15 @@ python3.8 -m venv venv
 source venv/bin/activate
 python3.8 -m pip install -r requirements.txt
 
-# Шаг 6: Генерация секретного ключа
+# Шаг 6: Выполнение тестов
+echo "Запуск тестов..."
+python3.8 -m pytest
+
+# Шаг 7: Генерация секретного ключа
 SECRET_KEY=$(openssl rand -base64 32)
 echo "Секретный ключ сгенерирован: $SECRET_KEY"
 
-# Шаг 7: Создание конфигурации для приложения
+# Шаг 8: Создание конфигурации для приложения
 echo "Создание конфигурационного файла..."
 cat <<EOL > /root/api/app/config.py
 # import os
@@ -58,10 +64,6 @@ CONTAINER = {
 class Config:
     SECRET_KEY = "$SECRET_KEY"
 EOL
-
-# Шаг 8: Выполнение тестов
-echo "Запуск тестов..."
-python3.8 -m pytest
 
 # Шаг 9: Создание файла службы systemd
 echo "Создание файла systemd для API..."
