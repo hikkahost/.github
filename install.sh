@@ -59,7 +59,11 @@ class Config:
     SECRET_KEY = "$SECRET_KEY"
 EOL
 
-# Шаг 8: Создание файла службы systemd
+# Шаг 8: Выполнение тестов
+echo "Запуск тестов..."
+python3.8 -m pytest
+
+# Шаг 9: Создание файла службы systemd
 echo "Создание файла systemd для API..."
 cat <<EOL > /etc/systemd/system/api.service
 [Unit]
@@ -78,13 +82,13 @@ User=root
 WantedBy=multi-user.target
 EOL
 
-# Шаг 9: Перезагрузка systemd, запуск и включение службы
+# Шаг 10: Перезагрузка systemd, запуск и включение службы
 echo "Перезагрузка systemd и запуск службы..."
 systemctl daemon-reload
 systemctl enable api.service
 systemctl start api.service
 
-# Шаг 10: Вывод IP адреса и сгенерированного ключа
+# Шаг 11: Вывод IP адреса и сгенерированного ключа
 IP_ADDRESS=$(hostname -I | awk '{print $1}')
 echo "API запущен на IP: $IP_ADDRESS"
 echo "Секретный ключ: $SECRET_KEY"
