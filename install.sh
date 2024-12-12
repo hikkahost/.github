@@ -38,6 +38,24 @@ python3.8 -m pip install -r requirements.txt
 
 # Шаг 6: Выполнение тестов
 echo "Запуск тестов..."
+cat <<EOL > /root/api/app/config.py
+# import os
+# from dotenv import load_dotenv
+
+# load_dotenv()
+
+CONTAINER = {
+    "cpu": 1.0,
+    "memory": "512M",
+    "size": "3g",
+    "rate": "50mbit",
+    "burst": "32kbit",
+    "latency": "400ms",
+}
+
+class Config:
+    SECRET_KEY = "secret"
+EOL
 python3.8 -m pytest
 
 # Шаг 7: Генерация секретного ключа
@@ -46,6 +64,7 @@ echo "Секретный ключ сгенерирован: $SECRET_KEY"
 
 # Шаг 8: Создание конфигурации для приложения
 echo "Создание конфигурационного файла..."
+rm /root/api/app/config.py
 cat <<EOL > /root/api/app/config.py
 # import os
 # from dotenv import load_dotenv
